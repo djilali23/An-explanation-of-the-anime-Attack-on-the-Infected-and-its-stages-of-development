@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attack on the Infected</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #1a6cf5;
+      --dark-blue: #0d3a8a;
+      --light-blue: #4d8eff;
+      --black: #0a0a0f;
+      --dark: #0e0e1a;
+      --card: #12121f;
+      --border: #1e1e35;
+      --text: #e8e8f0;
+      --muted: #7070a0;
+      --accent: #1a6cf5;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--light-blue); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(26,108,245,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse at 50% 100%, rgba(26,108,245,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.8rem;
+      color: var(--light-blue);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--dark-blue);
+      padding: 0.4rem 1.2rem;
+      border-radius: 2rem;
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .hero h1 span { color: var(--light-blue); }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 0.5rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--dark-blue);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--blue);
+      color: var(--light-blue);
+    }
+
+    .counter-section {
+      padding: 4rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--dark);
+    }
+
+    .counter-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .counter-display {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--light-blue);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .counter-sub { font-size: 1rem; color: var(--muted); }
+
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem;
+      max-width: 700px;
+      margin: 3rem auto 0;
+    }
+
+    .counter-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .counter-item .num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      display: block;
+    }
+
+    .counter-item .lbl {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    section {
+      padding: 5rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      color: var(--light-blue);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+
+    .about-card:hover { border-color: var(--dark-blue); }
+
+    .about-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+
+    .about-card p { color: var(--muted); font-size: 0.95rem; }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .project-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .project-badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      background: rgba(26,108,245,0.15);
+      color: var(--light-blue);
+      border: 1px solid var(--dark-blue);
+      white-space: nowrap;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .project-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+    .stat .val {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #fff;
+      display: block;
+    }
+
+    .stat .key {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .char-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .char-card:hover {
+      border-color: var(--blue);
+      background: #0f0f20;
+    }
+
+    .char-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(26,108,245,0.15);
+      border: 1px solid var(--dark-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--light-blue);
+    }
+
+    .char-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .char-role { font-size: 0.8rem; color: var(--muted); }
+
+    .progress-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .progress-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.2rem 1.5rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .progress-name { font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .progress-pct { font-size: 0.85rem; color: var(--light-blue); font-weight: 700; }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--dark-blue), var(--light-blue));
+      border-radius: 3px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--light-blue); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AoI ⚔</div>
+  <ul class="nav-links">
+    <li><a href="#about">من أنا</a></li>
+    <li><a href="#project">المشروع</a></li>
+    <li><a href="#characters">الشخصيات</a></li>
+    <li><a href="#progress">التقدم</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">مشروع أنمي أصلي</div>
+  <h1>Attack on<br/><span>the Infected</span></h1>
+  <p class="hero-subtitle">عالم افتراضي تحول إلى سجن. فيروسات تقتل. وكود واحد يغير كل شيء.</p>
+  <div class="hero-buttons">
+    <a href="#project" class="btn btn-primary">اكتشف المشروع</a>
+    <a href="#progress" class="btn btn-secondary">شاهد التقدم</a>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="counter-section">
+  <p class="counter-label">رحلة المشروع</p>
+  <div class="counter-display" id="days-counter">0</div>
+  <p class="counter-sub">يوم منذ بداية المشروع</p>
+  <div class="counter-grid">
+    <div class="counter-item"><span class="num">10</span><span class="lbl">حلقة مكتوبة</span></div>
+    <div class="counter-item"><span class="num">9</span><span class="lbl">شخصية رئيسية</span></div>
+    <div class="counter-item"><span class="num">2</span><span class="lbl">فيروس من النظام</span></div>
+    <div class="counter-item"><span class="num">1</span><span class="lbl">موسم كامل</span></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<section id="about">
+  <span class="section-tag">من أنا</span>
+  <h2 class="section-title">صانع القصة</h2>
+  <p class="section-desc">مبدع شغوف ببناء عوالم جديدة من الصفر. أؤمن أن القصص الجيدة تغير الناس.</p>
+  <div class="about-grid fade-in">
+    <div class="about-card"><h3>⚡ الفكرة</h3><p>أنمي بتعقيد أتاك أون تايتن — عالم واقع افتراضي يتحول لفخ مميت، وبطل يحمل سر أكبر مما يعرف.</p></div>
+    <div class="about-card"><h3>🎯 الهدف</h3><p>بناء مانغا احترافية كاملة وتقديمها لاستوديوهات يابانية كبرى مثل MAPPA و Wit Studio.</p></div>
+    <div class="about-card"><h3>✍️ الأسلوب</h3><p>سرد غامض متعدد الطبقات. كل حلقة تترك أسئلة. كل إجابة تفتح أسئلة أكبر.</p></div>
+    <div class="about-card"><h3>🌍 الرؤية</h3><p>أنمي عربي المنشأ يصل للعالمية — يثبت أن الإبداع لا حدود له ولا جنسية.</p></div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<section id="project">
+  <span class="section-tag">المشروع</span>
+  <h2 class="section-title">Attack on the Infected</h2>
+  <p class="section-desc">قصة معقدة تدور في طوكيو داخل لعبة واقع افتراضي تحولت لمصيدة حقيقية.</p>
+  <div class="project-card fade-in">
+    <div class="project-header">
+      <div class="project-title">الموسم الأول</div>
+      <div class="project-badge">قيد الإنشاء</div>
+    </div>
+    <p class="project-desc">رين أوزوماكي — مبرمج يدخل اللعبة ليكتشف أن صديقه القديم شينجي حوّلها إلى سجن مميت. فيروسات تقتل. أسرار مدفونة في الكود. وحارسة AI تحمل طبقات محجوبة لا يفهمها أحد بعد.</p>
+    <div class="project-stats">
+      <div class="stat"><span class="val">~20</span><span class="key">حلقة</span></div>
+      <div class="stat"><span class="val">NULL</span><span class="key">الفيروس الأول</span></div>
+      <div class="stat"><span class="val">ECHO</span><span class="key">الفيروس الثاني</span></div>
+      <div class="stat"><span class="val">7</span><span class="key">فيروسات النظام</span></div>
+    </div>
+  </div>
+  <div class="project-card fade-in">
+    <div class="project-header">
+      <div class="project-title">عالم اللعبة — NEXUS</div>
+      <div class="project-badge">مبني بالكامل</div>
+    </div>
+    <p class="project-desc">مدينة افتراضية ضخمة بسماء حمراء متشققة. كل لاعب يحمل قدرة تعكس شخصيته الحقيقية. والفيروسات... ليست مجرد كيانات رقمية.</p>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<section id="characters">
+  <span class="section-tag">الشخصيات</span>
+  <h2 class="section-title">أبطال القصة</h2>
+  <p class="section-desc">كل شخصية بُنيت بعمق وغموض ودور محدد في القصة الكبيرة.</p>
+  <div class="characters-grid fade-in">
+    <div class="char-card"><div class="char-icon">ر</div><div class="char-name">رين أوزوماكي</div><div class="char-role">البطل — الاختراق</div></div>
+    <div class="char-card"><div class="char-icon">ك</div><div class="char-name">كاغوري</div><div class="char-role">AI — السيف الساموراي</div></div>
+    <div class="char-card"><div class="char-icon">ش</div><div class="char-name">شينجي كازوما</div><div class="char-role">الخصم الغامض</div></div>
+    <div class="char-card"><div class="char-icon">آ</div><div class="char-name">آكيرا تاكاهاشي</div><div class="char-role">قائد الفيلق — الجاذبية</div></div>
+    <div class="char-card"><div class="char-icon">م</div><div class="char-name">ميسا كورودا</div><div class="char-role">السرعة الفائقة</div></div>
+    <div class="char-card"><div class="char-icon">ي</div><div class="char-name">يوري هاياشي</div><div class="char-role">الأوهام — الغامضة</div></div>
+    <div class="char-card"><div class="char-icon">س</div><div class="char-name">سوهو ناكامورا</div><div class="char-role">استنساخ القدرات</div></div>
+    <div class="char-card"><div class="char-icon">ه</div><div class="char-name">هاروتو مياكي</div><div class="char-role">تجسيد الذكريات</div></div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<section id="progress">
+  <span class="section-tag">التقدم</span>
+  <h2 class="section-title">أين وصلنا؟</h2>
+  <p class="section-desc">خارطة طريق المشروع من الفكرة حتى التقديم.</p>
+  <div class="progress-list fade-in">
+    <div class="progress-item">
+      <div class="progress-header"><span class="progress-name">بناء القصة والسيناريو</span><span class="progress-pct">50%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header"><span class="progress-name">تصاميم الشخصيات</span><span class="progress-pct">40%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header"><span class="progress-name">رسم المانغا</span><span class="progress-pct">5%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header"><span class="progress-name">بايبل الأنمي للتقديم</span><span class="progress-pct">20%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header"><span class="progress-name">التقديم للاستوديوهات</span><span class="progress-pct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>Attack on the Infected</span> — جميع الحقوق محفوظة</p>
+  <p style="margin-top:0.5rem;font-size:0.8rem;">فكرة أصلية — من الصفر إلى العالمية</p>
+</footer>
+
+<script>
+  const startDate = new Date('2025-07-09');
+  const today = new Date();
+  const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  const counter = document.getElementById('days-counter');
+  let current = 0;
+  const interval = setInterval(() => {
+    current += Math.ceil(diff / 40);
+    if (current >= diff) { current = diff; clearInterval(interval); }
+    counter.textContent = current;
+  }, 30);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
